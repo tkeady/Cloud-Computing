@@ -1,0 +1,12 @@
+# firewall template file
+
+resources:
+- name: {{ env["name"] }}-allow-http
+  type: compute.v1.firewall
+  properties:
+    network: {{ properties["network"] }}
+    sourceRanges: ["0.0.0.0/0"]
+    allowed:
+    #IPProtocol will usually be TCP but can be UDP or ICMP
+    - IPProtocol: {{ properties["IPProtocol"] }}
+      ports: ["80"]

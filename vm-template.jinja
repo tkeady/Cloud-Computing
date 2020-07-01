@@ -1,0 +1,22 @@
+#virtual machine template
+
+resources:
+- name: {{ env["name"] }}
+  type: compute.v1.instance
+  properties:
+    zone: europe-west4-a
+    #use f1-micro for smallest footprint
+    machineType: https://www.googleapis.com/compute/v1/projects/cmp3747m-keady-16608272/zones/europe-west1-b/machineTypes/f1-micro
+    disks:
+    - deviceName: boot
+      type: PERSISTENT 
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images/windows-server-2019-dc-v20190910
+    networkInterfaces:
+    - network: https://www.googleapis.com/compute/v1/projects/cmp3747m-keady-16608272/global/networks/default
+    #configure the network
+      accessConfigs:
+      - name: External NAT
+        type: ONE_TO_ONE_NAT

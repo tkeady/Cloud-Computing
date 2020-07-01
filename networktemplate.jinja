@@ -1,0 +1,9 @@
+# network template file
+
+resources:
+- name: {{ env["name"] }}
+  type: compute.v1.network
+  properties:
+  # want to create the subnetworks manually for better control
+    autoCreateSubnetworks: false
+    

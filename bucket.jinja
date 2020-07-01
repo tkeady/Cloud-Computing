@@ -1,0 +1,12 @@
+#template file for storage bucket
+
+resources:
+- name: {{ env["name"] }}
+  type: storage.v1.bucket
+  properties:
+    location: {{ properties['region'] }}
+    # kind is always this
+    kind: storage#bucket
+    # versioning configuration disabled so bucket stays the same
+    versioning:
+      enabled: false

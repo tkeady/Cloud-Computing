@@ -1,0 +1,20 @@
+# subnetwork template file
+
+resources:
+- name: {{ env["name"] }}
+  type: compute.v1.subnetwork
+  properties:
+    # sets the primary IP address range
+    ipCidrRange: {{ properties["ipCidrRange"] }}
+    #link subnetwork to main network
+    network: {{ properties["network"] }}
+    # set region for the subnetwork
+    region: {{ properties["region"] }}
+    #setup persistent disk storage using a windows image
+    disks:
+    - type: PERSISTENT
+      deviceName: boot
+      boot: true
+      autoDelete: true
+      initializeParams:
+        sourceImage: https://www.googleapis.com/compute/v1/projects/windows-sql-cloud/global/images/sql-2017-web-windows-2019-dc-v20191112

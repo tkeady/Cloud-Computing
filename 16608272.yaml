@@ -1,0 +1,54 @@
+#main config file
+
+#import template files
+
+imports:
+- path: vm-template.jinja
+- path: networktemplate.jinja
+- path: firewall.jinja
+- path: subnetworktemplate.jinja
+- path: bucket.jinja
+
+#import two virtual machines using different zones
+resources:
+- name: my-vm1
+  type: vm-template.jinja
+  properties:
+    zone: europe-west4-a
+
+- name: my-vm2
+  type: vm-template.jinja
+  properties:
+    zone: europe-north1-a
+
+    #setup the main network using the template
+- name: network1
+  type: networktemplate.jinja
+
+  #setup a subnetwork for multiple regions
+- name: subnetwork1
+  type: subnetworktemplate.jinja
+  properties:
+    ipCidrRange: 10.10.0.0/16
+    network: $(ref.network1.selfLink)
+    region: europe-west4
+
+- name: subnetwork2
+  type: subnetworktemplate.jinja
+  properties:
+    ipCidrRange: 10.20.0.0/16
+    network: $(ref.network1.selfLink)
+    region: europe-north1
+
+    #import firewall template 
+- name: firewall1
+  type: firewall.jinja
+  properties:
+    network: $(ref.network1.selfLink)
+    IPProtocol: TCP 
+
+    #create a storage bucket
+- name: apricotrhinosilver
+  type: bucket.jinja
+  properties:
+    region: eu
